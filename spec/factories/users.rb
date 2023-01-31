@@ -32,7 +32,7 @@ FactoryBot.define do
     end
 
     trait :bio_longer_than_300_characters do
-      bio { Faker::Lorem.paragraph_by_chars(number: rand(300..500)) }
+      bio { Faker::Lorem.paragraph_by_chars(number: rand(301..500)) }
     end
   end
 end
