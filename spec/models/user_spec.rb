@@ -95,6 +95,7 @@ RSpec.describe User, type: :model do
     describe '#follow' do
       let(:follower_user) { create :user }
       let(:followed_user) { create :user }
+      let(:invalid_user) { build :user }
 
       context 'when a user follows another user' do
         it 'adds a follower successfully' do
@@ -121,6 +122,23 @@ RSpec.describe User, type: :model do
           follower_user.follow(follower_user)
 
           expect(follower_user.following.count).to eq(1)
+        end
+      end
+
+      context 'when user is already followed' do
+        it 'returns an error message' do
+          follower_user.follow(followed_user)
+          follower_user.follow(followed_user)
+
+          expect(follower_user.errors[:following]).to eq(['already follows user'])
+        end
+      end
+
+      context 'when user follows a user that does not exist' do
+        it 'returns an error message' do
+          follower_user.follow(invalid_user)
+
+          expect(follower_user.errors[:following]).to eq(['user does not exist'])
         end
       end
     end
