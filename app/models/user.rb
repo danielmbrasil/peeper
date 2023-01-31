@@ -8,8 +8,8 @@ class User < ApplicationRecord
   validates :born_at, presence: true
   validate :user_must_be_above_min_age
 
-  has_many :followers, foreign_key: :follower_id, class_name: 'Follow'
-  has_many :following, foreign_key: :followed_id, class_name: 'Follow'
+  has_many :followers, foreign_key: :followed_id, class_name: 'Follow'
+  has_many :following, foreign_key: :follower_id, class_name: 'Follow'
 
   private
 
