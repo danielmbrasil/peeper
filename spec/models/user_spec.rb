@@ -91,5 +91,43 @@ RSpec.describe User, type: :model do
         expect(subject.errors[:bio]).to eq(['is too long (maximum is 300 characters)'])
       end
     end
+
+    describe '#follow' do
+      let(:follower_user) { create :user }
+      let(:followed_user) { create :user }
+
+      context 'when a user follows another user' do
+        it 'adds a follower successfully' do
+          follower_user.follow(followed_user)
+
+          expect(followed_user.followers.count).to eq(1)
+        end
+
+        it 'adds a following successfully' do
+          follower_user.follow(followed_user)
+
+          expect(follower_user.following.count).to eq(1)
+        end
+      end
+
+      context 'when a user follows themselves' do
+        it 'adds a follower successfully' do
+          follower_user.follow(follower_user)
+
+          expect(follower_user.followers.count).to eq(1)
+        end
+
+        it 'adds a following successfully' do
+          follower_user.follow(follower_user)
+
+          expect(follower_user.following.count).to eq(1)
+        end
+      end
+    end
+
+    describe 'associations' do
+      it { is_expected.to have_many(:followers).class_name('Follow') }
+      it { is_expected.to have_many(:following).class_name('Follow') }
+    end
   end
 end
