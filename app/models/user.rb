@@ -12,7 +12,7 @@ class User < ApplicationRecord
   has_many :following, foreign_key: :follower_id, class_name: 'Follow'
 
   def follow(other_user)
-    if follows?(other_user)
+    if already_follows?(other_user)
       errors.add(:following, 'already follows user')
     else
       following.create(followed_id: other_user.id)
@@ -27,7 +27,7 @@ class User < ApplicationRecord
     errors.add(:born_at, 'must be over 13 years old') unless born_at.present? && born_at <= MIN_AGE.years.ago.to_date
   end
 
-  def follows?(other_user)
+  def already_follows?(other_user)
     following.where(followed_id: other_user.id).exists?
   end
 end
