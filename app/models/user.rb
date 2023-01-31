@@ -32,6 +32,6 @@ class User < ApplicationRecord
   def already_followed?(other_user)
     return false unless following.where(followed_id: other_user.id).exists?
 
-    errors.add(:following, 'already follows user')
+    errors.add(:following, 'already followed')
   end
 end

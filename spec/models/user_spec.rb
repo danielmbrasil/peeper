@@ -130,7 +130,7 @@ RSpec.describe User, type: :model do
           follower_user.follow(followed_user)
           follower_user.follow(followed_user)
 
-          expect(follower_user.errors[:following]).to eq(['already follows user'])
+          expect(follower_user.errors[:following]).to eq(['already followed'])
         end
       end
 
