@@ -15,4 +15,16 @@ FactoryBot.define do
   trait :empty_body do
     body { '' }
   end
+
+  trait :with_one_medium do
+    media { [create(:medium)] }
+  end
+
+  trait :with_four_media do
+    media { create_list(:medium, 4) }
+  end
+
+  trait :over_media_limit do
+    media { create_list(:medium, 5) }
+  end
 end
