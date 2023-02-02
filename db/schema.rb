@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_01_31_195349) do
+ActiveRecord::Schema[7.0].define(version: 2023_02_01_131115) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
@@ -22,6 +22,15 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_31_195349) do
     t.index ["followed_id"], name: "index_follows_on_followed_id"
     t.index ["follower_id", "followed_id"], name: "index_follows_on_follower_id_and_followed_id", unique: true
     t.index ["follower_id"], name: "index_follows_on_follower_id"
+  end
+
+  create_table "media", force: :cascade do |t|
+    t.integer "medium_type", null: false
+    t.string "url", null: false
+    t.bigint "status_id"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["status_id"], name: "index_media_on_status_id"
   end
 
   create_table "statuses", force: :cascade do |t|
@@ -43,5 +52,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_01_31_195349) do
     t.datetime "updated_at", null: false
   end
 
+  add_foreign_key "media", "statuses"
   add_foreign_key "statuses", "statuses"
 end
