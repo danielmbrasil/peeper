@@ -68,16 +68,10 @@ RSpec.describe User, type: :model do
     end
 
     context 'when a user follows themselves' do
-      it 'adds a follower successfully' do
+      it 'returns a validation error message' do
         follower_user.follow(follower_user)
 
-        expect(follower_user.followers.count).to eq(1)
-      end
-
-      it 'adds a following successfully' do
-        follower_user.follow(follower_user)
-
-        expect(follower_user.following.count).to eq(1)
+        expect(follower_user.errors[:following]).to include("can't follow yourself")
       end
     end
 

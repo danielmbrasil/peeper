@@ -24,6 +24,11 @@ class User < ApplicationRecord
   end
 
   def followable?(other_user)
+    if id == other_user.id
+      errors.add(:following, "can't follow yourself")
+      return false
+    end
+
     exists?(other_user) && !already_followed?(other_user)
   end
 
