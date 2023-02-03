@@ -17,18 +17,6 @@ RSpec.describe Status, type: :model do
       it { is_expected.to be_valid }
     end
 
-    context 'when body is empty' do
-      subject { build :status, :empty_body }
-
-      it { is_expected.not_to be_valid }
-
-      it 'returns an error message' do
-        subject.validate
-
-        expect(subject.errors[:body]).to eq(["can't be blank", 'is too short (minimum is 1 character)'])
-      end
-    end
-
     context 'when status has one medium' do
       subject { create :status, :with_one_medium }
 

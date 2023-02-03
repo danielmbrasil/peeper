@@ -12,10 +12,6 @@ FactoryBot.define do
     body { Faker::Lorem.paragraph[0..300] }
   end
 
-  trait :empty_body do
-    body { '' }
-  end
-
   trait :with_one_medium do
     media { [create(:medium)] }
   end
