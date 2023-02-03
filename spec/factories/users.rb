@@ -11,28 +11,12 @@ FactoryBot.define do
       handle { 'inv@l1d' }
     end
 
-    trait :empty_handle do
-      handle { '' }
-    end
-
-    trait :empty_display_name do
-      display_name { '' }
-    end
-
-    trait :display_name_longer_than_30_chars do
-      display_name { 'this is a name longer than 30 characters' }
-    end
-
     trait :under_min_age do
       born_at { Faker::Date.birthday(min_age: 1, max_age: 12) }
     end
 
     trait :empty_bio do
       bio { '' }
-    end
-
-    trait :bio_longer_than_300_characters do
-      bio { Faker::Lorem.paragraph_by_chars(number: rand(301..500)) }
     end
   end
 end
