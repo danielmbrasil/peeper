@@ -2,7 +2,7 @@
 
 # User
 class User < ApplicationRecord
-  validates :handle, presence: true, uniqueness: true, length: { in: 4..12 }, format: { with: /\A[a-zA-z0-9_]*\z/ }
+  validates :handle, presence: true, uniqueness: true, length: { in: 4..12 }, format: { with: /\A\w*\z/ }
   validates :display_name, presence: true, length: { maximum: 30 }
   validates :bio, length: { maximum: 300 }, allow_blank: true
   validates :born_at, presence: true
