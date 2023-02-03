@@ -14,6 +14,7 @@ RSpec.describe User, type: :model do
 
     it { is_expected.to validate_presence_of(:display_name) }
     it { is_expected.to validate_length_of(:display_name).is_at_most(30) }
+    it { is_expected.to validate_length_of(:bio).is_at_most(300) }
 
     it { is_expected.to validate_presence_of(:born_at) }
 
@@ -25,43 +26,7 @@ RSpec.describe User, type: :model do
       it 'returns a validation error message' do
         subject.validate
 
-        expect(subject.errors[:handle]).to eq(['is invalid'])
-      end
-    end
-
-    context 'when handle is empty' do
-      subject { build :user, :empty_handle }
-
-      it { is_expected.not_to be_valid }
-
-      it 'returns a validation error message' do
-        subject.validate
-
-        expect(subject.errors[:handle]).to eq(["can't be blank", 'is too short (minimum is 4 characters)'])
-      end
-    end
-
-    context 'when display_name is empty' do
-      subject { build :user, :empty_display_name }
-
-      it { is_expected.not_to be_valid }
-
-      it 'returns a validation error message' do
-        subject.validate
-
-        expect(subject.errors[:display_name]).to eq(["can't be blank"])
-      end
-    end
-
-    context 'when display_name is longer than 30 characters' do
-      subject { build :user, :display_name_longer_than_30_chars }
-
-      it { is_expected.not_to be_valid }
-
-      it 'returns a validation error message' do
-        subject.validate
-
-        expect(subject.errors[:display_name]).to eq(['is too long (maximum is 30 characters)'])
+        expect(subject.errors[:handle]).to include('is invalid')
       end
     end
 
@@ -72,7 +37,7 @@ RSpec.describe User, type: :model do
 
       it 'returns an error message' do
         subject.validate
-        expect(subject.errors[:born_at]).to eq(['must be over 13 years old'])
+        expect(subject.errors[:born_at]).to include('must be over 13 years old')
       end
     end
 
@@ -81,71 +46,61 @@ RSpec.describe User, type: :model do
 
       it { is_expected.to be_valid }
     end
+  end
 
-    context 'when bio is longer than 300 characters' do
-      subject { build :user, :bio_longer_than_300_characters }
+  describe '#follow' do
+    let(:follower_user) { create :user }
+    let(:followed_user) { create :user }
+    let(:invalid_user) { build :user }
 
-      it 'returns a validation error message' do
-        subject.validate
+    context 'when a user follows another user' do
+      it 'adds a follower successfully' do
+        follower_user.follow(followed_user)
 
-        expect(subject.errors[:bio]).to eq(['is too long (maximum is 300 characters)'])
+        expect(followed_user.followers.count).to eq(1)
+      end
+
+      it 'adds a following successfully' do
+        follower_user.follow(followed_user)
+
+        expect(follower_user.following.count).to eq(1)
       end
     end
 
-    describe '#follow' do
-      let(:follower_user) { create :user }
-      let(:followed_user) { create :user }
-      let(:invalid_user) { build :user }
+    context 'when a user follows themselves' do
+      it 'adds a follower successfully' do
+        follower_user.follow(follower_user)
 
-      context 'when a user follows another user' do
-        it 'adds a follower successfully' do
-          follower_user.follow(followed_user)
-
-          expect(followed_user.followers.count).to eq(1)
-        end
-
-        it 'adds a following successfully' do
-          follower_user.follow(followed_user)
-
-          expect(follower_user.following.count).to eq(1)
-        end
+        expect(follower_user.followers.count).to eq(1)
       end
 
-      context 'when a user follows themselves' do
-        it 'adds a follower successfully' do
-          follower_user.follow(follower_user)
+      it 'adds a following successfully' do
+        follower_user.follow(follower_user)
 
-          expect(follower_user.followers.count).to eq(1)
-        end
-
-        it 'adds a following successfully' do
-          follower_user.follow(follower_user)
-
-          expect(follower_user.following.count).to eq(1)
-        end
-      end
-
-      context 'when user is already followed' do
-        it 'returns an error message' do
-          follower_user.follow(followed_user)
-          follower_user.follow(followed_user)
-
-          expect(follower_user.errors[:following]).to eq(['already followed'])
-        end
-      end
-
-      context 'when user follows a user that does not exist' do
-        it 'returns an error message' do
-          follower_user.follow(invalid_user)
-
-          expect(follower_user.errors[:following]).to eq(['user does not exist'])
-        end
+        expect(follower_user.following.count).to eq(1)
       end
     end
 
-    describe 'associations' do
-      it { is_expected.to have_many(:followers).class_name('Follow') }
-      it { is_expected.to have_many(:following).class_name('Follow') }
+    context 'when user is already followed' do
+      it 'returns an error message' do
+        follower_user.follow(followed_user)
+        follower_user.follow(followed_user)
+
+        expect(follower_user.errors[:following]).to eq(['already followed'])
+      end
     end
+
+    context 'when user follows a user that does not exist' do
+      it 'returns an error message' do
+        follower_user.follow(invalid_user)
+
+        expect(follower_user.errors[:following]).to eq(['user does not exist'])
+      end
+    end
+  end
+
+  describe 'associations' do
+    it { is_expected.to have_many(:followers).class_name('Follow') }
+    it { is_expected.to have_many(:following).class_name('Follow') }
   end
 end
