@@ -11,8 +11,4 @@ FactoryBot.define do
     status_id { create :status }
     body { Faker::Lorem.paragraph[0..300] }
   end
-
-  trait :empty_body do
-    body { '' }
-  end
 end
