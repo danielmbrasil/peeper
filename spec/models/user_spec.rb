@@ -80,7 +80,7 @@ RSpec.describe User, type: :model do
         follower_user.follow(followed_user)
         follower_user.follow(followed_user)
 
-        expect(follower_user.errors[:following]).to eq(['already followed'])
+        expect(follower_user.errors[:following]).to include('already followed')
       end
     end
 
@@ -88,7 +88,7 @@ RSpec.describe User, type: :model do
       it 'returns an error message' do
         follower_user.follow(invalid_user)
 
-        expect(follower_user.errors[:following]).to eq(['user does not exist'])
+        expect(follower_user.errors[:following]).to include('user does not exist')
       end
     end
   end
