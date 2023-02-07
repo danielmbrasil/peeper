@@ -1,0 +1,17 @@
+<% if @status.present? %>
+  <p>Author: <%= @status.user.display_name %></p>
+  <p>Body: <%= @status.body %></p>
+
+  <% if @status.media.present? %>
+    <p>Media:</p>
+    <% @status.media.each do |medium| %>
+      <p>Type:<%= medium.medium_type %></p>
+      <p>URL: <%= medium.url %></p>
+    <% end %>
+  <% end %>
+
+  <div>
+    <%= button_to 'Back', root_path, method: :get, form_class: 'status-button' %>
+    <%= button_to 'Edit', nil, disabled: true, form_class: 'status-button' %>
+  </div>
+<% end %>
