@@ -11,6 +11,8 @@ class User < ApplicationRecord
   has_many :followers, foreign_key: :followed_id, class_name: 'Follow'
   has_many :following, foreign_key: :follower_id, class_name: 'Follow'
 
+  has_many :statuses
+
   def follow(other_user)
     following.create(followed_id: other_user.id) if followable?(other_user)
   end
