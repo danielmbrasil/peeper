@@ -4,24 +4,34 @@ require 'rails_helper'
 
 RSpec.describe StatusesController, type: :controller do
   describe 'GET index' do
-    it 'returns a successful response' do
-      get :index
+    context 'when there are statuses available' do
+      let(:status_list) { create_list(:status, 5) }
 
-      expect(response).to be_successful
+      it 'returns a successful response' do
+        get :index
+
+        expect(response).to be_successful
+      end
+
+      it 'returns a list of statuses' do
+        get :index
+
+        expect(assigns(:statuses)).to eq(status_list)
+      end
     end
 
-    it 'returns a list of statuses' do
-      status_list = create_list(:status, 5)
+    context 'when there is no status available' do
+      it 'returns a successful response' do
+        get :index
 
-      get :index
+        expect(response).to be_successful
+      end
 
-      expect(assigns(:statuses)).to eq(status_list)
-    end
+      it 'returns an empty list of statuses' do
+        get :index
 
-    it 'renders the index view' do
-      get :index
-
-      expect(response).to render_template('index')
+        expect(assigns(:statuses)).to eq([])
+      end
     end
   end
 end

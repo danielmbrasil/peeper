@@ -9,5 +9,11 @@ RSpec.describe 'Statuses', type: :request do
 
       expect(response.status).to eq(200)
     end
+
+    it 'renders the index view' do
+      get '/statuses'
+
+      expect(response).to render_template('index')
+    end
   end
 end
