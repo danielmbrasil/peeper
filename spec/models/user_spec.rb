@@ -47,4 +47,54 @@ RSpec.describe User, type: :model do
       it { is_expected.to be_valid }
     end
   end
+
+  describe '#follow' do
+    let(:follower_user) { create :user }
+    let(:followed_user) { create :user }
+    let(:invalid_user) { build :user }
+
+    context 'when a user follows another user' do
+      it 'adds a follower successfully' do
+        follower_user.follow(followed_user)
+
+        expect(followed_user.followers.count).to eq(1)
+      end
+
+      it 'adds a following successfully' do
+        follower_user.follow(followed_user)
+
+        expect(follower_user.following.count).to eq(1)
+      end
+    end
+
+    context 'when a user follows themselves' do
+      it 'returns a validation error message' do
+        follower_user.follow(follower_user)
+
+        expect(follower_user.errors[:following]).to include("can't follow yourself")
+      end
+    end
+
+    context 'when user is already followed' do
+      it 'returns an error message' do
+        follower_user.follow(followed_user)
+        follower_user.follow(followed_user)
+
+        expect(follower_user.errors[:following]).to include('already followed')
+      end
+    end
+
+    context 'when user follows a user that does not exist' do
+      it 'returns an error message' do
+        follower_user.follow(invalid_user)
+
+        expect(follower_user.errors[:following]).to include('user does not exist')
+      end
+    end
+  end
+
+  describe 'associations' do
+    it { is_expected.to have_many(:followers).class_name('Follow') }
+    it { is_expected.to have_many(:following).class_name('Follow') }
+  end
 end
