@@ -1,0 +1,13 @@
+# frozen_string_literal: true
+
+require 'rails_helper'
+
+RSpec.describe 'Statuses', type: :request do
+  describe 'GET /index' do
+    it 'returns HTTP success code' do
+      get '/statuses'
+
+      expect(response.status).to eq(200)
+    end
+  end
+end
