@@ -1,0 +1,23 @@
+<h1>Feed</h1>
+
+<% if @statuses.empty? %>
+  <h2>No status available. Create a new status!</h2>
+<% else %>
+  <table class="statuses-table">
+    <thead>
+      <tr>
+        <th>Display Name</th>
+        <th>Body</th>
+      </tr>
+    </thead>
+    <% @statuses.each do |status| %>
+      <tr>
+        <td><%= status.user.display_name %></td>
+        <td><%= status.body[..50] %></td>
+        <td>View</td>
+        <td>Reply</td>
+        <td>Delete</td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
