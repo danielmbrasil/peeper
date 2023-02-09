@@ -17,7 +17,7 @@
         <td><%= status.user.display_name %></td>
         <td><%= status.body[..50] %></td>
         <td><%= link_to 'View', status_path(status) %></td>
-        <td>Reply</td>
+        <td><%= link_to 'Reply', status_reply_path(status) %></td>
         <td>Delete</td>
       </tr>
     <% end %>

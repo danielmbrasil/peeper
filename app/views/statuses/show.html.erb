@@ -10,6 +10,7 @@
 
   <div>
     <%= button_to 'Back', root_path, method: :get, form_class: 'status-button' %>
+    <%= button_to 'Reply', status_reply_path(@status), method: :get, form_class: 'status-button' %>
     <%= button_to 'Edit', status_edit_path(@status), method: :get, form_class: 'status-button' %>
   </div>
 <% end %>
