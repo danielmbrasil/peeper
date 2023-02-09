@@ -1,5 +1,7 @@
 <h1>Feed</h1>
 
+<%= link_to 'Create Status', status_new_path %>
+
 <% if @statuses.empty? %>
   <h2>No status available. Create a new status!</h2>
 <% else %>

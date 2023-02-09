@@ -1,0 +1,12 @@
+<%= form_with  model: status do |f| %>
+  <%= f.label :user %>
+  <%= f.collection_select :user_id, User.order(:handle), :id, :handle, prompt: true %><br/>
+  <%= f.label :body %>
+  <%= f.text_area :body %><br/>
+
+  <%=  f.fields_for :media do |media_form| %>
+    <%= render 'medium_fields', f: media_form %>
+  <% end %>
+
+  <%= f.submit %>
+<% end %>
