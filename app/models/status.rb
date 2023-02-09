@@ -5,8 +5,8 @@ class Status < ApplicationRecord
   MEDIA_LIMIT = 4
 
   belongs_to :user
-  has_many :replies, class_name: 'Status', foreign_key: :status_id
-  has_many :media
+  has_many :replies, class_name: 'Status', foreign_key: :status_id, dependent: :destroy
+  has_many :media, dependent: :destroy
 
   validates :user_id, presence: true
   validates :body, presence: true, allow_blank: false, length: { maximum: 300 }

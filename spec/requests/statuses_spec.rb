@@ -150,4 +150,57 @@ RSpec.describe 'Statuses', type: :request do
       end
     end
   end
+
+  describe 'DELETE /status/:id' do
+    context 'when status exists' do
+      it 'deletes status and redirects to index view' do
+        delete "/status/#{status.id}"
+
+        expect(response.status).to eq(302)
+        expect(response).to redirect_to(root_path)
+        follow_redirect!
+
+        expect(response.status).to eq(200)
+        expect(response).to render_template('index')
+      end
+    end
+
+    context 'when status is not found' do
+      it 'returns HTTP 404' do
+        delete '/status/1'
+
+        expect(response.status).to eq(404)
+      end
+    end
+
+    context 'when status has media' do
+      let(:status_with_media) { create :status, :with_four_media }
+
+      it 'deletes status and redirects to index view' do
+        delete "/status/#{status_with_media.id}"
+
+        expect(response.status).to eq(302)
+        expect(response).to redirect_to(root_path)
+        follow_redirect!
+
+        expect(response.status).to eq(200)
+        expect(response).to render_template('index')
+      end
+    end
+
+    context 'when status has replies' do
+      let(:status_with_reply) { status.replies.create(body: 'reply', user_id: status.user_id) }
+
+      it 'deletes status and redirects to index view' do
+        delete "/status/#{status_with_reply.id}"
+
+        expect(response.status).to eq(302)
+        expect(response).to redirect_to(root_path)
+        follow_redirect!
+
+        expect(response.status).to eq(200)
+        expect(response).to render_template('index')
+      end
+    end
+  end
 end
