@@ -61,6 +61,8 @@ group :development, :test do
   gem "shoulda-matchers", "~> 5.0"
 
   gem 'rails-controller-testing'
+
+  gem 'pry'
 end
 
 group :development do
@@ -73,3 +75,5 @@ group :development do
   # Speed up commands on slow machines / big apps [https://github.com/rails/spring]
   # gem "spring"
 end
+
+gem "ruby-lsp", "~> 0.3.8", :group => :development
