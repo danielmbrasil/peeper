@@ -3,6 +3,9 @@
 require 'rails_helper'
 
 RSpec.describe 'Statuses', type: :request do
+  let(:user) { create :user }
+  let(:status) { create :status }
+
   describe 'GET /index' do
     subject { get '/statuses' }
 
@@ -12,8 +15,6 @@ RSpec.describe 'Statuses', type: :request do
   end
 
   describe 'GET /show' do
-    let(:status) { create :status }
-
     subject { get "/status/#{status.id}" }
 
     it { is_expected.to eq(200) }
@@ -33,9 +34,14 @@ RSpec.describe 'Statuses', type: :request do
     it { is_expected.to render_template('new') }
   end
 
-  describe 'POST /statuses' do
-    let(:user) { create :user }
+  describe 'GET /new/:status_id' do
+    subject { get "/status/new/#{status.id}" }
 
+    it { is_expected.to eq(200) }
+    it { is_expected.to render_template('new') }
+  end
+
+  describe 'POST /statuses' do
     context 'when creating a valid status' do
       let(:params) { { user_id: user.id, body: 'status[:body' } }
 
@@ -62,10 +68,23 @@ RSpec.describe 'Statuses', type: :request do
           expect(response.status).to eq(200)
         end
       end
+
+      context 'when replying a status' do
+        let(:params) { { status_id: status.id, user_id: user.id, body: 'body' } }
+
+        it 'creates a reply and loads show view' do
+          post '/statuses', params: { status: params }
+
+          expect(response).to redirect_to(assigns(:status))
+          follow_redirect!
+
+          expect(response).to render_template('show')
+          expect(response.status).to eq(200)
+        end
+      end
     end
 
     context 'when creating an invalid status' do
-      let(:user) { create :user }
       let(:params) { { user_id: user.id, body: '' } }
 
       it 'returns HTTP 422 and reloads the new view' do
@@ -79,8 +98,6 @@ RSpec.describe 'Statuses', type: :request do
 
   describe 'GET /status/:id/edit' do
     context 'when status exists' do
-      let(:status) { create :status }
-
       subject { get "/status/#{status.id}/edit" }
 
       it { is_expected.to eq(200) }
@@ -98,8 +115,6 @@ RSpec.describe 'Statuses', type: :request do
   end
 
   describe 'PATCH /status/:id' do
-    let(:status) { create :status }
-
     context 'when update is valid' do
       let(:params) { { body: 'a new body' } }
 

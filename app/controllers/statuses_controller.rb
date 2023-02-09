@@ -53,6 +53,7 @@ class StatusesController < ApplicationController
       :id,
       :body,
       :user_id,
+      :status_id,
       media_attributes: %i[id medium_type url _destroy]
     )
   end

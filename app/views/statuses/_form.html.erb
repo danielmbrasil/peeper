@@ -8,5 +8,7 @@
     <%= render 'medium_fields', f: media_form %>
   <% end %>
 
+  <%= f.hidden_field :status_id, value: params[:status_id] %>
+
   <%= f.submit %>
 <% end %>

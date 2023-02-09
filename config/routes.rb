@@ -5,6 +5,7 @@ Rails.application.routes.draw do
 
   get '/statuses', to: 'statuses#index'
   get '/status/new', to: 'statuses#new'
+  get '/status/new/:status_id', to: 'statuses#new', as: 'status_reply'
   get '/status/:id', to: 'statuses#show', as: 'status'
   get '/status/:id/edit', to: 'statuses#edit', as: 'status_edit'
 
