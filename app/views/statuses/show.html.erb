@@ -12,6 +12,6 @@
 
   <div>
     <%= button_to 'Back', root_path, method: :get, form_class: 'status-button' %>
-    <%= button_to 'Edit', nil, disabled: true, form_class: 'status-button' %>
+    <%= button_to 'Edit', status_edit_path(@status), method: :get, form_class: 'status-button' %>
   </div>
 <% end %>
