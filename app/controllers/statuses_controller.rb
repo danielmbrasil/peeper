@@ -13,7 +13,7 @@ class StatusesController < ApplicationController
   end
 
   def new
-    @status = Status.new
+    @status = Status.new(status_id: params[:status_id])
     Status::MEDIA_LIMIT.times { @status.media.build }
   end
 
@@ -32,8 +32,7 @@ class StatusesController < ApplicationController
   end
 
   def update
-    @status.update(status_params)
-    if @status.save
+    if @status.update(status_params)
       redirect_to @status
     else
       render :edit, status: :unprocessable_entity
