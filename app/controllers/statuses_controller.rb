@@ -3,6 +3,7 @@
 # StatusesController
 class StatusesController < ApplicationController
   before_action :find_status, only: %i[show edit update]
+  after_action :initialize_media, only: %i[new edit]
 
   def index
     @statuses = Status.all
@@ -14,7 +15,6 @@ class StatusesController < ApplicationController
 
   def new
     @status = Status.new(status_id: params[:status_id])
-    Status::MEDIA_LIMIT.times { @status.media.build }
   end
 
   def create
@@ -26,10 +26,7 @@ class StatusesController < ApplicationController
     end
   end
 
-  def edit
-    number_of_media_left = Status::MEDIA_LIMIT - @status.media.size
-    number_of_media_left.times { @status.media.build }
-  end
+  def edit; end
 
   def update
     if @status.update(status_params)
@@ -55,5 +52,10 @@ class StatusesController < ApplicationController
       :status_id,
       media_attributes: %i[id medium_type url _destroy]
     )
+  end
+
+  def initialize_media
+    number_of_media_to_be_built = Status::MEDIA_LIMIT - @status.media.size
+    number_of_media_to_be_built.times { @status.media.build }
   end
 end
