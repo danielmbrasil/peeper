@@ -30,10 +30,9 @@ RSpec.describe StatusesController, type: :controller do
   end
 
   describe 'GET show' do
-    let(:status) { create :status }
-    let(:status_with_media) { create :status, :with_four_media }
-
     context 'when status exists' do
+      let(:status) { create :status }
+
       it 'returns a status' do
         get :show, params: { id: status.id }
 
@@ -41,6 +40,8 @@ RSpec.describe StatusesController, type: :controller do
       end
 
       context 'when status has media' do
+        let(:status_with_media) { create :status, :with_four_media }
+
         it 'returns a status' do
           get :show, params: { id: status_with_media.id }
 
