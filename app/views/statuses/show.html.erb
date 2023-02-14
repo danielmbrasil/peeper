@@ -1,0 +1,16 @@
+<% if @status.present? %>
+  <%= render @status %>
+
+  <% if @status.replies.any? %>
+    <p>Replies:</p>
+    <% @status.replies.each do |reply| %>
+      <%= render 'status', status: reply %>
+    <% end %>
+  <% end %>
+
+  <div>
+    <%= button_to 'Back', root_path, method: :get, form_class: 'status-button' %>
+    <%= button_to 'Reply', status_reply_path(@status), method: :get, form_class: 'status-button' %>
+    <%= button_to 'Edit', status_edit_path(@status), method: :get, form_class: 'status-button' %>
+  </div>
+<% end %>

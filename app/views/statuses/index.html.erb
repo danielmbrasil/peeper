@@ -1,0 +1,25 @@
+<h1>Feed</h1>
+
+<%= link_to 'Create Status', status_new_path %>
+
+<% if @statuses.empty? %>
+  <h2>No status available. Create a new status!</h2>
+<% else %>
+  <table class="statuses-table">
+    <thead>
+      <tr>
+        <th>Display Name</th>
+        <th>Body</th>
+      </tr>
+    </thead>
+    <% @statuses.each do |status| %>
+      <tr>
+        <td><%= status.user.display_name %></td>
+        <td><%= status.body[..50] %></td>
+        <td><%= link_to 'View', status_path(status) %></td>
+        <td><%= link_to 'Reply', status_reply_path(status) %></td>
+        <td><%= link_to 'Delete', status_delete_path(status), data: { 'turbo-method': :delete } %></td>
+      </tr>
+    <% end %>
+  </table>
+<% end %>
