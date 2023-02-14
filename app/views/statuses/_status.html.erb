@@ -1,0 +1,10 @@
+<p>Author: <%= status.user.display_name %></p>
+<p>Body: <%= status.body %></p>
+
+<% if status.media.present? %>
+  <p>Media:</p>
+  <% status.media.each do |medium| %>
+    <p>Type:<%= medium.medium_type %></p>
+    <p>URL: <%= medium.url %></p>
+  <% end %>
+<% end %>
