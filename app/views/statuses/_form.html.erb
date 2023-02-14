@@ -5,7 +5,17 @@
   <%= status_form.text_area :body %><br/>
 
   <%=  status_form.fields_for :media do |medium_form| %>
-    <%= render 'medium_fields', medium_form: medium_form %>
+    <div style="display: inline-block; padding: 5px">
+      <%= medium_form.label :medium_type %>
+      <%= medium_form.number_field :medium_type %>
+      <%= medium_form.label :url %>
+      <%= medium_form.text_field :url %>
+      <% unless status.new_record? %>
+        <%= medium_form.check_box :_destroy %>
+        <%= medium_form.label :_destroy, 'remove medium' %>
+      <% end %>
+  </div>
+  <br/>
   <% end %>
 
   <%= status_form.hidden_field :status_id %>
