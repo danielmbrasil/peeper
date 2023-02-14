@@ -21,7 +21,7 @@ RSpec.describe 'Statuses', type: :request do
     it { is_expected.to render_template('show') }
 
     context 'when status is not found' do
-      subject { get '/status/1' }
+      subject { get '/status/foo' }
 
       it { is_expected.to eq(404) }
     end
