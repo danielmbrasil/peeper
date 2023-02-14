@@ -1,0 +1,7 @@
+<h1>Edit Status</h1>
+
+<%= render 'form', status: @status %>
+
+<% if @status.errors.any? %>
+  <%= @status.errors.full_messages %>
+<% end %>
