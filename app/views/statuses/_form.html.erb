@@ -1,14 +1,14 @@
-<%= form_with  model: status do |f| %>
-  <%= f.label :user %>
-  <%= f.collection_select :user_id, User.order(:handle), :id, :handle, prompt: true %><br/>
-  <%= f.label :body %>
-  <%= f.text_area :body %><br/>
+<%= form_with  model: status do |status_form| %>
+  <%= status_form.label :user %>
+  <%= status_form.collection_select :user_id, User.order(:handle), :id, :handle, prompt: true %><br/>
+  <%= status_form.label :body %>
+  <%= status_form.text_area :body %><br/>
 
-  <%=  f.fields_for :media do |media_form| %>
-    <%= render 'medium_fields', f: media_form %>
+  <%=  status_form.fields_for :media do |medium_form| %>
+    <%= render 'medium_fields', medium_form: medium_form %>
   <% end %>
 
-  <%= f.hidden_field :status_id %>
+  <%= status_form.hidden_field :status_id %>
 
-  <%= f.submit %>
+  <%= status_form.submit %>
 <% end %>
