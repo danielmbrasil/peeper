@@ -3,7 +3,6 @@
 # StatusesController
 class StatusesController < ApplicationController
   before_action :find_status, only: %i[show edit update destroy]
-  after_action :initialize_media, only: %i[new edit]
 
   def index
     @statuses = Status.all
@@ -15,6 +14,7 @@ class StatusesController < ApplicationController
 
   def new
     @status = Status.new(status_id: params[:status_id])
+    initialize_media
   end
 
   def create
@@ -26,7 +26,9 @@ class StatusesController < ApplicationController
     end
   end
 
-  def edit; end
+  def edit
+    initialize_media
+  end
 
   def update
     if @status.update(status_params)
