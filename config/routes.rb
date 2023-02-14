@@ -12,4 +12,6 @@ Rails.application.routes.draw do
   post '/statuses', to: 'statuses#create'
 
   patch '/status/:id', to: 'statuses#update'
+
+  delete '/status/:id', to: 'statuses#destroy', as: 'status_delete'
 end

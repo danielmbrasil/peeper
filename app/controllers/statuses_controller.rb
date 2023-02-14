@@ -2,7 +2,7 @@
 
 # StatusesController
 class StatusesController < ApplicationController
-  before_action :find_status, only: %i[show edit update]
+  before_action :find_status, only: %i[show edit update destroy]
   after_action :initialize_media, only: %i[new edit]
 
   def index
@@ -34,6 +34,11 @@ class StatusesController < ApplicationController
     else
       render :edit, status: :unprocessable_entity
     end
+  end
+
+  def destroy
+    @status.destroy
+    redirect_to root_path
   end
 
   private

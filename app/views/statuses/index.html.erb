@@ -18,7 +18,7 @@
         <td><%= status.body[..50] %></td>
         <td><%= link_to 'View', status_path(status) %></td>
         <td><%= link_to 'Reply', status_reply_path(status) %></td>
-        <td>Delete</td>
+        <td><%= link_to 'Delete', status_delete_path(status), data: { 'turbo-method': :delete } %></td>
       </tr>
     <% end %>
   </table>
