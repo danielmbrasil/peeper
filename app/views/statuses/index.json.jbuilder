@@ -10,5 +10,5 @@ json.array! @statuses do |status|
 
   json.display_name status.user.display_name
 
-  json.reply_peep true if status.status_id.present?
+  json.reply_peep true if status.parent_id.present?
 end
