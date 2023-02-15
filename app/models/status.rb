@@ -7,7 +7,7 @@ class Status < ApplicationRecord
   TRUNCATED_BODY_TERMINATOR = '...'
 
   belongs_to :user
-  has_many :replies, class_name: 'Status', foreign_key: :status_id, dependent: :destroy
+  has_many :replies, class_name: 'Status', foreign_key: :parent_id, dependent: :destroy
   has_many :media, dependent: :destroy
 
   validates :user_id, presence: true

@@ -8,7 +8,7 @@ FactoryBot.define do
 
   trait :reply do
     user { create :user }
-    status_id { create :status }
+    parent_id { create :status }
     body { Faker::Lorem.paragraph[0..300] }
   end
 

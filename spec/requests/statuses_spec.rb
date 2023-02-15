@@ -34,7 +34,7 @@ RSpec.describe 'Statuses', type: :request do
     it { is_expected.to render_template('new') }
   end
 
-  describe 'GET /new/:status_id' do
+  describe 'GET /new/:parent_id' do
     subject { get "/status/new/#{status.id}" }
 
     it { is_expected.to eq(200) }
@@ -70,7 +70,7 @@ RSpec.describe 'Statuses', type: :request do
       end
 
       context 'when replying a status' do
-        let(:params) { { status_id: status.id, user_id: user.id, body: 'body' } }
+        let(:params) { { parent_id: status.id, user_id: user.id, body: 'body' } }
 
         it 'creates a reply and loads show view' do
           post '/statuses', params: { status: params }
