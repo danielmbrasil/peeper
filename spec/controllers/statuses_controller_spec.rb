@@ -113,7 +113,7 @@ RSpec.describe StatusesController, type: :controller do
       let!(:status) { create :status }
 
       before do
-        allow_any_instance_of(Status).to receive(:status_id).and_return(1)
+        allow_any_instance_of(Status).to receive(:parent_id).and_return(1)
 
         get :index, format: :json
       end

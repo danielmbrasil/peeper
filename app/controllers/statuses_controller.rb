@@ -13,7 +13,7 @@ class StatusesController < ApplicationController
   end
 
   def new
-    @status = Status.new(status_id: params[:status_id])
+    @status = Status.new(parent_id: params[:parent_id])
     initialize_media
   end
 
@@ -56,7 +56,7 @@ class StatusesController < ApplicationController
       :id,
       :body,
       :user_id,
-      :status_id,
+      :parent_id,
       media_attributes: %i[id medium_type url _destroy]
     )
   end
