@@ -72,48 +72,53 @@ RSpec.describe StatusesController, type: :controller do
     context 'when body is longer than 150 characters' do
       let(:user) { create :user }
       let!(:status) { Status.create(user:, body: 'x' * 200) }
-
-      before { get :index, format: :json }
+      let(:expected_keys) { %w[body full_body display_name] }
 
       it 'contains full_body key' do
-        expect(parsed_body.first.keys).to contain_exactly('body', 'full_body', 'display_name')
+        get :index, format: :json
+
+        expect(parsed_body.first.keys).to eq(expected_keys)
       end
 
       it 'truncates the status body' do
+        get :index, format: :json
+
         response_status_body_length = parsed_body.first['body'].length
 
         expect(response_status_body_length).to eq(Status::BODY_INDEX_DISPLAY_LENGTH)
       end
 
       it 'appends ellipsis to truncated status body' do
+        get :index, format: :json
+
         status_body = parsed_body.first['body']
 
-        expect(status_body.ends_with(Status::TRUNCATED_BODY_TERMINATOR)).to eq(true)
+        expect(status_body.ends_with?(Status::TRUNCATED_BODY_TERMINATOR)).to eq(true)
       end
     end
 
     context 'when body is shorter than 150 characters' do
       let(:user) { create :user }
       let!(:status) { Status.create(user:, body: 'short body') }
-
-      before { get :index, format: :json }
+      let(:expected_keys) { %w[body display_name] }
 
       it 'returns body and display_name fields' do
-        expect(parsed_body.first.keys).to contain_exactly('body', 'display_name')
+        get :index, format: :json
+
+        expect(parsed_body.first.keys).to eq(expected_keys)
       end
     end
 
     context 'when status is a reply' do
       let!(:status) { create :status }
+      let(:expected_keys) { %w[body display_name reply_peep] }
 
-      before do
-        allow_any_instance_of(Status).to receive(:parent_id).and_return(1)
-
-        get :index, format: :json
-      end
+      before { allow_any_instance_of(Status).to receive(:parent_id).and_return(1) }
 
       it 'contains reply_peep key' do
-        expect(parsed_body.first.keys).to contain_exactly('body', 'display_name', 'reply_peep')
+        get :index, format: :json
+
+        expect(parsed_body.first.keys).to eq(expected_keys)
       end
     end
   end
