@@ -4,39 +4,43 @@ require 'rails_helper'
 
 # rubocop:disable Metrics/BlockLength
 RSpec.describe UsersController, type: :controller do
-  describe 'GET index in JSON' do
+  describe 'GET #index in JSON' do
     render_views
 
     context 'when there are users' do
-      let!(:users) { create_list(:user, 5) }
+      let!(:users) { create_list(:user, 10) }
 
-      before { get :index, format: :json }
-
-      it 'returns HTTP 200' do
-        expect(response.status).to eq(200)
+      let(:expected_response_body) do
+        users.map do |user|
+          { display_name: user.display_name }.with_indifferent_access
+        end
       end
 
-      it 'contains display_name key' do
-        parsed_body = JSON.parse(response.body)
+      it 'returns HTTP status OK' do
+        get :index, format: :json
 
-        expect(parsed_body.first.keys).to contain_exactly('display_name')
+        expect(response).to have_http_status(:ok)
       end
 
-      it 'returns correct display_name' do
+      it 'returns users correctly' do
+        get :index, format: :json
+
         parsed_body = JSON.parse(response.body)
 
-        expect(parsed_body.first['display_name']).to eq(users.first.display_name)
+        expect(parsed_body).to eq(expected_response_body)
       end
     end
 
     context 'when there is no user' do
-      before { get :index, format: :json }
+      it 'returns HTTP status OK' do
+        get :index, format: :json
 
-      it 'returns HTTP 200' do
-        expect(response.status).to eq(200)
+        expect(response).to have_http_status(:ok)
       end
 
       it 'returns empty body' do
+        get :index, format: :json
+
         parsed_body = JSON.parse(response.body)
 
         expect(parsed_body).to eq([])
