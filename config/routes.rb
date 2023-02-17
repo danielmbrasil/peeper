@@ -14,4 +14,6 @@ Rails.application.routes.draw do
   patch '/status/:id', to: 'statuses#update'
 
   delete '/status/:id', to: 'statuses#destroy', as: 'status_delete'
+
+  get '/users', to: 'users#index'
 end
