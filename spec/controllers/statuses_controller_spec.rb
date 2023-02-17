@@ -132,6 +132,7 @@ RSpec.describe StatusesController, type: :controller do
     context 'when status is a reply' do
       let(:status) { create :status }
       let(:expected_keys) { %w[body display_name reply_peep media] }
+      let(:parsed_body) { JSON.parse(response.body) }
 
       before { allow_any_instance_of(Status).to receive(:parent_id).and_return(1) }
 
@@ -144,8 +145,6 @@ RSpec.describe StatusesController, type: :controller do
       it 'contains reply_peep key' do
         get :show, params: { id: status.id }, format: :json
 
-        parsed_body = JSON.parse(response.body)
-
         expect(parsed_body.keys).to eq(expected_keys)
       end
     end
@@ -153,11 +152,10 @@ RSpec.describe StatusesController, type: :controller do
     context 'when status is not a reply' do
       let(:status) { create :status }
       let(:expected_keys) { %w[body display_name media] }
+      let(:parsed_body) { JSON.parse(response.body) }
 
       it 'does not contain reply_peep key' do
         get :show, params: { id: status.id }, format: :json
-
-        parsed_body = JSON.parse(response.body)
 
         expect(parsed_body.keys).to eq(expected_keys)
       end
