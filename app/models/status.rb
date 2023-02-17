@@ -3,9 +3,11 @@
 # Status
 class Status < ApplicationRecord
   MEDIA_LIMIT = 4
+  BODY_INDEX_DISPLAY_LENGTH = 150
+  TRUNCATED_BODY_TERMINATOR = '...'
 
   belongs_to :user
-  has_many :replies, class_name: 'Status', foreign_key: :status_id, dependent: :destroy
+  has_many :replies, class_name: 'Status', foreign_key: :parent_id, dependent: :destroy
   has_many :media, dependent: :destroy
 
   validates :user_id, presence: true
