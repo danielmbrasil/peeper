@@ -5,7 +5,7 @@ class StatusesController < ApplicationController
   before_action :find_status, only: %i[show edit update destroy]
 
   def index
-    @statuses = Status.all
+    @statuses = Status.all.includes(:user)
   end
 
   def show
