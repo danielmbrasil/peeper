@@ -1,25 +1,36 @@
-<h1>Feed</h1>
+<h1><%= I18n.t('messages.feed') %></h1>
 
-<%= link_to 'Create Status', status_new_path %>
+<%= link_to I18n.t('links.create'), status_new_path %>
 
-<% if @statuses.empty? %>
-  <h2>No status available. Create a new status!</h2>
-<% else %>
+<div>
+  <%= I18n.t('languages.language') %>
+  <div>
+    <%= link_to I18n.t('languages.english'), url_for(locale: :en) %>
+    <span> | </span>
+    <%= link_to I18n.t('languages.portuguese'), url_for(locale: 'pt-BR') %>
+  </div>
+</div>
+
+<% if @statuses.any? %>
   <table class="statuses-table">
     <thead>
       <tr>
-        <th>Display Name</th>
-        <th>Body</th>
+        <th><%= User.human_attribute_name(:display_name) %></th>
+        <th><%= Status.human_attribute_name(:body) %></th>
+        <th><%= Status.human_attribute_name(:created_at) %></th>
       </tr>
     </thead>
     <% @statuses.each do |status| %>
       <tr>
         <td><%= status.user.display_name %></td>
         <td><%= status.body[..50] %></td>
-        <td><%= link_to 'View', status_path(status) %></td>
-        <td><%= link_to 'Reply', status_reply_path(status) %></td>
-        <td><%= link_to 'Delete', status_delete_path(status), data: { 'turbo-method': :delete } %></td>
+        <td><%= I18n.l(status.created_at) %></td>
+        <td><%= link_to I18n.t('links.view'), status_path(status) %></td>
+        <td><%= link_to I18n.t('links.reply'), status_reply_path(status) %></td>
+        <td><%= link_to I18n.t('links.delete'), status_delete_path(status), data: { 'turbo-method': :delete } %></td>
       </tr>
     <% end %>
   </table>
 <% end %>
+
+<%= I18n.t('messages.peeps-count', count: @statuses.size) %>

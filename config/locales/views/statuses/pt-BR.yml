@@ -1,0 +1,16 @@
+pt-BR:
+  messages:
+    peeps-count:
+      zero: 'Lista de peeps vazia'
+      one: '1 peep'
+      other: '%{count} peeps'
+    feed: 'Feed'
+  languages:
+    language: 'Escolha um idioma'
+    english: 'Inglês'
+    portuguese: 'Português'
+  links:
+    create: 'Criar peep'
+    view: 'Visualizar'
+    reply: 'Responder'
+    delete: 'Excluir'

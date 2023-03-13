@@ -1,0 +1,10 @@
+pt-BR:
+  activerecord:
+    models:
+      user: 'Usuário'
+    attributes:
+      user:
+        handle: 'Nome de usuário'
+        display_name: 'Nome'
+        bio: 'Biografia'
+        born_at: 'Data de nascimento'
